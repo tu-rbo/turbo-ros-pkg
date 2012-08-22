@@ -1,7 +1,7 @@
 <launch>
   <group>
   	<param name="video_sensor_type" value="kinect" type="str" />
-      <param name="3d_from_sensor" value="false" type="bool" />
+	<param name="3d_from_sensor" value="false" type="bool" />
     	<param name="manual_segmentation" value="true" type="bool" />
 	<param name="number_features" value="200" type="int" />
 	<param name="focal_length" value="520" type="double" />
@@ -15,7 +15,7 @@
   	<node name="feature_tracker" output="screen" pkg="feature_tracker" type="feature_tracker" respawn="true" />  
   	<rosparam file="$(find visual_net)/config/visual_net_params.yaml" command="load" ns="visual_net" />
   	<node name="visual_net" output="screen" pkg="visual_net" type="visual_net" respawn="true" />  
-    <rosparam file="$(find kinematic_analyzer)/config/kinematic_analyzer_params.yaml" command="load" ns="kinematic_analyzer" />
+	<rosparam file="$(find kinematic_analyzer)/config/kinematic_analyzer_params.yaml" command="load" ns="kinematic_analyzer" />
   	<node name="kinematic_analyzer" output="screen" pkg="kinematic_analyzer" type="kinematic_analyzer" respawn="true" />  
   	<node pkg="rviz" type="rviz" name="rviz" respawn="true" args="-d $(find visual_net)/../rviz_iap.vcg" />
   </group>
