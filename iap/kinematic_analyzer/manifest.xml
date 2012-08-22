@@ -4,10 +4,10 @@
      kinematic_analyzer
 
   </description>
-  <author>roberto</author>
-  <license>BSD</license>
+  <author>Roberto Martin, Sebastian Hoefer</author>
+  <license>GPL</license>
   <review status="unreviewed" notes=""/>
-  <url>http://ros.org/wiki/</url>
+  <url>http://ros.org/wiki/nonexisting</url>
   <depend package="pcl"/>
   <depend package="pcl_ros"/>
   <depend package="sensor_msgs"/>
@@ -20,11 +20,7 @@
   <depend package="visualization_msgs"/>
   <depend package="geometry_msgs"/>
 
-
   <depend package="bayes_filter_ros"/>
-
-  <!--depend package="articulation_models"/-->
-  <!--depend package="articulation_msgs"/-->
 
   <export>
      <cpp cflags="-I${prefix}/include -I${prefix}/include/kinematic_analyzer -I${prefix}/include/kinematic_analyzer/joint -I${prefix}/include/kinematic_analyzer/joint_detection -I${prefix}/include/kinematic_analyzer/joint_estimation"

@@ -5,9 +5,10 @@
 
   </description>
   <author>Roberto/roberto.martinmartin@tu-berlin.de</author>
-  <license>BSD</license>
+  <license>GPL</license>
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/non_existing</url>
+
   <depend package="iap_common"/>
   <depend package="pcl"/>
   <depend package="pcl_ros"/>
@@ -18,7 +19,7 @@
   <depend package="roscpp"/>
   <depend package="std_msgs"/>
   <depend package="image_transport"/>
-  <versioncontrol type="svn" url="http://elektro.robotics.tu-berlin.de/svn/iap/trunk/feature_tracker/"/>
+
   <export>
     <cpp cflags="-I${prefix}/include" lflags="-L${prefix}/lib -lros"/>
     <cpp os="osx" cflags="-I${prefix}/include" lflags="-L${prefix}/lib -Wl,-rpath,-L${prefix}lib -lrosthread -framework CoreServices"/>

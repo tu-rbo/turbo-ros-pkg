@@ -15,7 +15,7 @@
   <depend package="std_msgs"/>
   <depend package="pcl_ros"/>
   <depend package="rosbuild"/>
-  <versioncontrol type="svn" url="http://elektro.robotics.tu-berlin.de/svn/iap/trunk/iap_common/"/>
+
   <export>
   	<!--<rosbuild cmake_directory="${prefix}"/>-->
      <cpp cflags="-I${prefix}/include/iap_common 

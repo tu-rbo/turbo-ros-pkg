@@ -1,13 +1,14 @@
 <package>
   <description brief="visual_net">
 
-     Segment the set of point features detected and tracked by the FeatureTracker
+     Visual Net
 
   </description>
-  <author>stefan</author>
-  <license>BSD</license>
+  <author>Roberto Martin, Dov Katz, Sebastian Hoefer</author>
+  <license>GPL / BSD</license>
   <review status="unreviewed" notes=""/>
-  <url>http://ros.org/wiki/kinect_tracking</url>
+  <url>http://ros.org/wiki/nonexisting</url>
+
   <depend package="iap_common"/>
   <depend package="pcl"/>
   <depend package="pcl_ros"/>
