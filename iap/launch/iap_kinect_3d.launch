@@ -17,6 +17,6 @@
   	<node name="visual_net" output="screen" pkg="visual_net" type="visual_net" respawn="true" />  
 	<rosparam file="$(find kinematic_analyzer)/config/kinematic_analyzer_params.yaml" command="load" ns="kinematic_analyzer" />
   	<node name="kinematic_analyzer" output="screen" pkg="kinematic_analyzer" type="kinematic_analyzer" respawn="true" />  
-  	<node pkg="rviz" type="rviz" name="rviz" respawn="true" args="-d $(find visual_net)/../rviz_iap.vcg" />
+  	<node pkg="rviz" type="rviz" name="rviz" respawn="true" args="-d $(find visual_net)/../launch/rviz_iap.vcg" />
   </group>
 </launch>
