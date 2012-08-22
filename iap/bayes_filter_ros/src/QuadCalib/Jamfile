@@ -1,0 +1,12 @@
+# Bayes++ Jamfile - See Boost.build v2
+
+# Quadratic Calibration -  filter example
+project
+     :
+     : default-build release
+;
+
+exe quadcalib :
+     "QuadCalib.cpp"
+     ../BayesFilter//BayesFilter
+;

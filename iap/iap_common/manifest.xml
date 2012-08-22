@@ -1,0 +1,32 @@
+<package>
+  <description brief="iap common library">
+	
+	The iap common library contains shared classes and resources for all packages and nodes of the iap.
+
+  </description>
+  <license>GPL, BSD</license>
+  <author>Roberto Martin, Dov Katz, Sebastian Hoefer</author>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/non_existing</url>
+
+  <depend package="opencv2"/>
+  <depend package="cv_bridge"/>
+  <depend package="roscpp"/>
+  <depend package="std_msgs"/>
+  <depend package="pcl_ros"/>
+  <depend package="rosbuild"/>
+  <versioncontrol type="svn" url="http://elektro.robotics.tu-berlin.de/svn/iap/trunk/iap_common/"/>
+  <export>
+  	<!--<rosbuild cmake_directory="${prefix}"/>-->
+     <cpp cflags="-I${prefix}/include/iap_common 
+     -I${prefix}/include/iap_common/data_logging 
+     -I${prefix}/include/iap_common/kinematics 
+     -I${prefix}/include/iap_common/tracker 
+     -I${prefix}/include/iap_common/image 
+     -I${prefix}/include/iap_common/video_sensor 
+     -I${prefix}/include/iap_common/utils 
+     -I${prefix}/include/iap_common/cluster
+     -I${prefix}/msg_gen/cpp/include "
+      lflags="-Wl,-rpath,${prefix}/lib -L${prefix}/lib -liap_common" />
+  </export>
+</package>

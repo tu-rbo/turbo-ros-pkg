@@ -1,0 +1,20 @@
+<package>
+  <description brief="Bayes++, the Bayesian Filtering Library">
+
+    bayes_filter (Bayes++) is an open source library of C++ classes. These classes represent and implement a wide variety of numerical algorithms for Bayesian Filtering of discrete systems. The classes provide tested and consistent numerical methods and the class hierarchy explicitly represents the variety of filtering algorithms and system model types
+
+  </description>
+  <author>Miquel Massot</author>
+  <license>Copyright (c) 2003,2004,2005 Michael Stevens, Copyright (c) 2002 Michael Stevens and Australian Centre for Field Robotics</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/bayes_filter</url>
+
+  <export>
+    <cpp cflags="-I${prefix}/src/" 
+      lflags="-L${prefix}/lib -Wl,-rpath,${prefix}/lib -lBayesFilter -llapack"/>
+    <!-- lflags="-l${prefix}/lib/libBayesFilter.a"/> -->
+  </export>
+
+</package>
+
+

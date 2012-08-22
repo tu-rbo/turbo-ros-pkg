@@ -1,0 +1,18 @@
+<stack>
+  <description brief="Interactive Perception system">
+    Method to segment rigid bodies and analyze the hidden kinematic structure using interaction
+  </description>
+  <author>Maintained by Roberto Martin, roberto.martinmartin@tu-berlin.de and Sebastian Hoefer, sebastian.hoefer@tu-berlin.de TU Berlin-RBO</author>
+  <license>GPL, BSD</license>  
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/nonexisting</url>
+
+  <depend stack="common_msgs" /> <!-- geometry_msgs, sensor_msgs, visualization_msgs -->
+  <depend stack="image_common" /> <!-- image_transport -->
+  <depend stack="openni_kinect" /> <!-- openni_camera -->
+  <depend stack="perception_pcl" /> <!-- pcl, pcl_ros -->
+  <depend stack="ros" /> <!-- rosbuild -->
+  <depend stack="ros_comm" /> <!-- std_msgs, roscpp -->
+  <depend stack="vision_opencv" /> <!-- opencv2, cv_bridge -->
+
+</stack>

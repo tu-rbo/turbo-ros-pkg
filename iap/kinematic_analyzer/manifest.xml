@@ -1,0 +1,36 @@
+<package>
+  <description brief="kinematic_analyzer">
+
+     kinematic_analyzer
+
+  </description>
+  <author>roberto</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/</url>
+  <depend package="pcl"/>
+  <depend package="pcl_ros"/>
+  <depend package="sensor_msgs"/>
+  <depend package="opencv2"/>
+  <depend package="cv_bridge"/>
+  <depend package="roscpp"/>
+  <depend package="std_msgs"/>
+  <depend package="image_transport"/>
+  <depend package="iap_common"/>
+  <depend package="visualization_msgs"/>
+  <depend package="geometry_msgs"/>
+
+
+  <depend package="bayes_filter_ros"/>
+
+  <!--depend package="articulation_models"/-->
+  <!--depend package="articulation_msgs"/-->
+
+  <export>
+     <cpp cflags="-I${prefix}/include -I${prefix}/include/kinematic_analyzer -I${prefix}/include/kinematic_analyzer/joint -I${prefix}/include/kinematic_analyzer/joint_detection -I${prefix}/include/kinematic_analyzer/joint_estimation"
+      lflags="-Wl,-rpath,${prefix}/lib -L${prefix}/lib -lka -lBayesFilter" />
+  </export>
+
+</package>
+
+

@@ -1,0 +1,14 @@
+<launch>
+  <group>
+  	<param name="video_sensor_type" value="kinect" type="str" />
+  	<param name="tracking_in_3d" value="true" type="bool" />
+  	<param name="num_tracked_feats" value="100" type="int" />
+  	<include file="$(find openni_camera)/launch/openni_node.launch" />
+  	<rosparam file="$(find feature_tracker)/config/tracking_params.yaml" command="load" ns="feature_tracker" />
+  	<node name="feature_tracker" output="screen" pkg="feature_tracker" type="feature_tracker" respawn="true" />  
+  	<rosparam file="$(find visual_net)/config/visual_net_params.yaml" command="load" ns="visual_net" />
+  	<node name="visual_net" output="screen" pkg="visual_net" type="visual_net" respawn="true" />  
+  	<!--node name="kinematic_analyzer" output="screen" pkg="iap" type="listener-talker" respawn="true" -->  
+  	<!--node name="kinematic_visualizer" output="screen" pkg="iap" type="listener" respawn="true" -->  
+  </group>
+</launch>
