@@ -10,12 +10,12 @@
 	<param name="video_width" value="640" type="int" />
 	<param name="min_motion" value="0.12" type="double"/>
   	<rosparam file="$(find feature_tracker)/config/feature_tracker_params.yaml" command="load" ns="feature_tracker" />
-  	<!--node name="feature_tracker" output="screen" pkg="feature_tracker" type="feature_tracker" respawn="true" /-->
+  	<node name="feature_tracker" output="screen" pkg="feature_tracker" type="feature_tracker" respawn="true" />
   	<rosparam file="$(find visual_net)/config/visual_net_params.yaml" command="load" ns="visual_net" />
   	<node name="visual_net" output="screen" pkg="visual_net" type="visual_net" respawn="true" />
 	<rosparam file="$(find kinematic_analyzer)/config/kinematic_analyzer_params.yaml" command="load" ns="kinematic_analyzer" />
 	<node name="kinematic_analyzer" output="screen" pkg="kinematic_analyzer" type="kinematic_analyzer" respawn="true" />
-  	<!--node name="new_kinematic_analyzer_re" output="screen" pkg="new_kinematic_analyzer_re" type="new_kinematic_analyzer_re" respawn="true" /-->
-	<!--node pkg="rviz" type="rviz" name="rviz" respawn="true" args="-d $(find visual_net)/../rviz_iap.vcg"/-->
+  	<node name="new_kinematic_analyzer_re" output="screen" pkg="new_kinematic_analyzer_re" type="new_kinematic_analyzer_re" respawn="true" />
+	<node pkg="rviz" type="rviz" name="rviz" respawn="true" args="-d $(find visual_net)/../rviz_iap.vcg"/>
   </group>
 </launch>
