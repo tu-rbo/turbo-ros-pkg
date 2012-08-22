@@ -6,10 +6,7 @@
 	<param name="number_features" value="200" type="int" />
 	<param name="focal_length" value="520" type="double" />
 	<param name="min_cluster_size" value="10" type="int" />
-	<param name="video_height" value="480" type="int" />
-	<param name="video_width" value="640" type="int" />
 	<param name="min_motion" value="0.08" type="double"/>
-  	<param name="tracking_in_3d" value="false" type="bool" />
   	<include file="$(find openni_camera)/launch/openni_node.launch" />
   	<rosparam file="$(find feature_tracker)/config/feature_tracker_params.yaml" command="load" ns="feature_tracker" />
   	<node name="feature_tracker" output="screen" pkg="feature_tracker" type="feature_tracker" respawn="true" />  
