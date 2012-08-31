@@ -7,7 +7,7 @@
   <author>Roberto/roberto.martinmartin@tu-berlin.de</author>
   <license>GPL</license>
   <review status="unreviewed" notes=""/>
-  <url>http://ros.org/wiki/non_existing</url>
+  <url>http://ros.org/wiki/feature_tracker</url>
 
   <depend package="iap_common"/>
   <depend package="pcl"/>
