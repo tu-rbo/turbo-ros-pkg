@@ -7,7 +7,7 @@
   <author>Roberto Martin, Sebastian Hoefer</author>
   <license>GPL</license>
   <review status="unreviewed" notes=""/>
-  <url>http://ros.org/wiki/nonexisting</url>
+  <url>http://ros.org/wiki/kinematic_analyzer</url>
   <depend package="pcl"/>
   <depend package="pcl_ros"/>
   <depend package="sensor_msgs"/>
