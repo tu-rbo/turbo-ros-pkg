@@ -7,7 +7,7 @@
   <license>GPL, BSD</license>
   <author>Roberto Martin, Dov Katz, Sebastian Hoefer</author>
   <review status="unreviewed" notes=""/>
-  <url>http://ros.org/wiki/non_existing</url>
+  <url>http://ros.org/wiki/iap_common</url>
 
   <depend package="opencv2"/>
   <depend package="cv_bridge"/>
