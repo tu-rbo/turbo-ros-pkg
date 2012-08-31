@@ -1,7 +1,7 @@
 <package>
   <description brief="feature_tracker">
 
-     The feature_tracker finds and tracks several point features over a video sequence.
+     The feature_tracker finds and tracks several point features over a video stream.
 
   </description>
   <author>Roberto/roberto.martinmartin@tu-berlin.de</author>
