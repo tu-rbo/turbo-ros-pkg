@@ -5,7 +5,7 @@
   <author>Maintained by Roberto Martin, roberto.martinmartin@tu-berlin.de and Sebastian Hoefer, sebastian.hoefer@tu-berlin.de TU Berlin-RBO</author>
   <license>Mixed: GPL / BSD /Copyright (c) 2003,2004,2005 Michael Stevens, Copyright (c) 2002 Michael Stevens and Australian Centre for Field Robotics</license>  
   <review status="unreviewed" notes=""/>
-  <url>http://ros.org/wiki/nonexisting</url>
+  <url>http://ros.org/wiki/iap</url>
 
   <depend stack="common_msgs" /> <!-- geometry_msgs, sensor_msgs, visualization_msgs -->
   <depend stack="image_common" /> <!-- image_transport -->
