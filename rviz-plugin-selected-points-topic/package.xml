@@ -1,0 +1,22 @@
+<package>
+  <name>selected_points_topic</name>
+  <version>1.0.0</version>
+  <description>
+     Publishes selected points on /selected_points topic.
+  </description>
+  <maintainer email="mail@pBartels.net">Philipp Bartels</maintainer>
+  <license>MIT</license>
+
+  <author>Philipp Bartels</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>rviz</build_depend>
+
+  <run_depend>rviz</run_depend>
+
+  <export>
+      <rosdoc config="${prefix}/rosdoc.yaml"/>
+      <rviz plugin="${prefix}/plugin_description.xml"/>
+  </export>
+</package>
