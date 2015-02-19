@@ -3,15 +3,18 @@
 ##
 ## First start with some standard catkin stuff.
 cmake_minimum_required(VERSION 2.8.3)
-project(selected_points_topic)
+project(selected_points_publisher)
 find_package(catkin REQUIRED COMPONENTS rviz)
 catkin_package()
-include_directories(${catkin_INCLUDE_DIRS})
+find_package(PCL REQUIRED)
+include_directories(include ${catkin_INCLUDE_DIRS}  ${PCL_INCLUDE_DIRS})
 link_directories(${catkin_LIBRARY_DIRS})
 
 ## This plugin includes Qt widgets, so we must include Qt like so:
 find_package(Qt4 COMPONENTS QtCore QtGui REQUIRED)
 include(${QT_USE_FILE})
+
+
 
 ## I prefer the Qt signals and slots to avoid defining "emit", "slots",
 ## etc because they can conflict with boost signals, so define QT_NO_KEYWORDS here.
@@ -20,13 +23,13 @@ add_definitions(-DQT_NO_KEYWORDS)
 ## Here we specify which header files need to be run through "moc",
 ## Qt's meta-object compiler.
 qt4_wrap_cpp(MOC_FILES
-  src/selected_points_topic.h
+  include/selected_points_publisher/SelectedPointsPublisher.h
 )
 
 ## Here we specify the list of source files, including the output of
 ## the previous command which is stored in ``${MOC_FILES}``.
 set(SOURCE_FILES
-  src/selected_points_topic.cpp
+  src/SelectedPointsPublisher.cpp
   ${MOC_FILES}
 )
 
@@ -46,7 +49,7 @@ add_library(${PROJECT_NAME} ${SOURCE_FILES})
 ## library and names the actual file something like
 ## "librviz_plugin_tutorials.so", or whatever is appropriate for your
 ## particular OS.
-target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} ${catkin_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} ${catkin_LIBRARIES} ${PCL_LIBRARIES})
 ## END_TUTORIAL
 
 
