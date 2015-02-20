@@ -64,6 +64,8 @@
 #include <pcl/point_types.h>
 #include <sensor_msgs/PointCloud2.h>
 
+#include <pcl/filters/extract_indices.h>
+
 namespace rviz_plugin_selected_points_publisher
 {
 
@@ -94,10 +96,12 @@ public Q_SLOTS:
 
 protected:
 
-  int _processSelectedAreaAndPublishPoints();
+  int _processSelectedAreaAndFindPoints();
+  int _publishAccumulatedPoints();
   ros::NodeHandle nh_;
   ros::Publisher rviz_selected_pub_;
   ros::Publisher real_selected_pub_;
+  ros::Publisher partial_pc_pub_;
   ros::Publisher bb_marker_pub_;
   ros::Subscriber pc_subs_;
 
@@ -109,6 +113,13 @@ protected:
   bool selecting_;
 
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr current_pc_;
+  pcl::PointCloud<pcl::PointXYZRGB>::Ptr selected_segment_pc_;
+  pcl::PointCloud<pcl::PointXYZRGB>::Ptr accumulated_segment_pc_;
+
+  pcl::ExtractIndices<pcl::PointXYZRGB>::Ptr extract_indices_filter_;
+
+  int num_acc_points_;
+  int num_selected_points_;
 };
 } // end namespace rviz_plugin_selected_points_publisher
 
