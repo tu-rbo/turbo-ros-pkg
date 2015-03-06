@@ -1,0 +1,12 @@
+<library path="libselected_points_publisher">
+  <class name="rviz_plugin_selected_points_publisher/SelectedPointsPublisher"
+         type="rviz_plugin_selected_points_publisher::SelectedPointsPublisher"
+         base_class_type="rviz::Tool">
+    <description>
+      Fork of the rviz::SelectionTool:
+      Drag with the left button to select objects in the 3D scene.
+      Hold the Alt key to change viewpoint as in the Move tool.
+      Additionally publishes selected points on /selected_points topic.
+    </description>
+  </class>
+</library>
