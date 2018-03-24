@@ -64,8 +64,8 @@ void SelectedPointsPublisher::updateTopic()
     ROS_INFO_STREAM_NAMED("SelectedPointsPublisher.updateTopic", "Publishing real selected points on topic " <<  nh_.resolveName (real_cloud_topic_) );//<< " with frame_id " << context_->getFixedFrame().toStdString() );
     ROS_INFO_STREAM_NAMED("SelectedPointsPublisher.updateTopic", "Publishing bounding box marker on topic " <<  nh_.resolveName (bb_marker_topic_) );//<< " with frame_id " << context_->getFixedFrame().toStdString() );
 
-    current_pc_.reset(new pcl::PointCloud<pcl::PointXYZRGB>());
-    accumulated_segment_pc_.reset(new pcl::PointCloud<pcl::PointXYZRGB>);
+    current_pc_.reset(new pcl::PointCloud<pcl::PointXYZ>());
+    accumulated_segment_pc_.reset(new pcl::PointCloud<pcl::PointXYZ>);
 
     num_acc_points_ = 0;
     num_selected_points_ = 0;
@@ -102,8 +102,8 @@ int SelectedPointsPublisher::processKeyEvent( QKeyEvent* event, rviz::RenderPane
                 marker.action = visualization_msgs::Marker::DELETE;
                 marker.lifetime = ros::Duration();
 
-                selected_segment_pc_.reset(new pcl::PointCloud<pcl::PointXYZRGB>);
-                accumulated_segment_pc_.reset(new pcl::PointCloud<pcl::PointXYZRGB>);
+                selected_segment_pc_.reset(new pcl::PointCloud<pcl::PointXYZ>);
+                accumulated_segment_pc_.reset(new pcl::PointCloud<pcl::PointXYZ>);
                 bb_marker_pub_.publish(marker);
             }
             else if(event->key() == 'r' || event->key() == 'R')
@@ -134,7 +134,7 @@ int SelectedPointsPublisher::processKeyEvent( QKeyEvent* event, rviz::RenderPane
                 bb_marker_pub_.publish(marker);
 
                 // First remove the selected point of the original point cloud so that they cannot be selected again:
-                pcl::PointCloud<pcl::PointXYZRGB> temp_new_pc;
+                pcl::PointCloud<pcl::PointXYZ> temp_new_pc;
                 extract_indices_filter_->setKeepOrganized(true);
                 extract_indices_filter_->setNegative(true);
                 temp_new_pc.header = this->current_pc_->header;
@@ -163,7 +163,7 @@ int SelectedPointsPublisher::processKeyEvent( QKeyEvent* event, rviz::RenderPane
                     this->num_acc_points_ += this->num_selected_points_;
                 }
 
-                selected_segment_pc_.reset(new pcl::PointCloud<pcl::PointXYZRGB>);
+                selected_segment_pc_.reset(new pcl::PointCloud<pcl::PointXYZ>);
                 this->num_selected_points_ = 0;
 
                 ROS_INFO_STREAM_NAMED("SelectedPointsPublisher._processSelectedAreaAndFindPoints",
@@ -289,7 +289,7 @@ int SelectedPointsPublisher::_processSelectedAreaAndFindPoints()
     double bb_size_y = max_pt.y - min_pt.y;
     double bb_size_z = max_pt.z - min_pt.z;
 
-    // NOTE: Use these two lines and change the following code (templates on PointXYZ instead of PointXYZRGB)
+    // NOTE: Use these two lines and change the following code (templates on PointXYZ instead of PointXYZ)
     // if your input cloud is not colored
     // Convert the point cloud from the callback into a xyz point cloud
     //pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_xyz(new pcl::PointCloud<pcl::PointXYZ>);
@@ -303,7 +303,7 @@ int SelectedPointsPublisher::_processSelectedAreaAndFindPoints()
     Eigen::Affine3f transform = Eigen::Translation3f(tfinal)*qfinal;
     Eigen::Affine3f transform_inverse = transform.inverse();
 
-    pcl::CropBox<pcl::PointXYZRGB> crop_filter;
+    pcl::CropBox<pcl::PointXYZ> crop_filter;
     crop_filter.setTransform(transform_inverse);
     crop_filter.setMax(cb_max);
     crop_filter.setMin(cb_min);
@@ -313,9 +313,9 @@ int SelectedPointsPublisher::_processSelectedAreaAndFindPoints()
     pcl::PointIndices::Ptr inliers( new pcl::PointIndices() );
     crop_filter.filter(inliers->indices);
 
-    this->selected_segment_pc_.reset(new pcl::PointCloud<pcl::PointXYZRGB>);
+    this->selected_segment_pc_.reset(new pcl::PointCloud<pcl::PointXYZ>);
 
-    extract_indices_filter_.reset(new pcl::ExtractIndices<pcl::PointXYZRGB>());
+    extract_indices_filter_.reset(new pcl::ExtractIndices<pcl::PointXYZ>());
     extract_indices_filter_->setIndices(inliers);
     extract_indices_filter_->setKeepOrganized(true);
     extract_indices_filter_->setInputCloud(this->current_pc_);
@@ -372,7 +372,7 @@ int SelectedPointsPublisher::_publishAccumulatedPoints()
 
     ROS_WARN_STREAM_NAMED("SelectedPointsPublisher._processSelectedAreaAndFindPoints",
                           "Cleaning the accumulated point cloud after publishing");
-    accumulated_segment_pc_.reset(new pcl::PointCloud<pcl::PointXYZRGB>);
+    accumulated_segment_pc_.reset(new pcl::PointCloud<pcl::PointXYZ>);
     this->num_acc_points_ = 0;
     return 0;
 }
