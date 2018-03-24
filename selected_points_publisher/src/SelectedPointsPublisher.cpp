@@ -25,8 +25,7 @@
 #include <pcl/filters/passthrough.h>
 #include <pcl/common/common.h>
 
-#include <pcl/filters/impl/box_clipper3D.hpp>
-
+/* #include <pcl/filters/impl/box_clipper3D.hpp> */
 
 #include <visualization_msgs/Marker.h>
 
@@ -49,7 +48,7 @@ void SelectedPointsPublisher::updateTopic()
     nh_.param("frame_id", tf_frame_, std::string("/base_link"));
     rviz_cloud_topic_ = std::string("/rviz_selected_points");
     real_cloud_topic_ = std::string("/real_selected_points");
-    subs_cloud_topic_ = std::string("/camera/depth_registered/points");
+    subs_cloud_topic_ = std::string("/velodyne_points");
     bb_marker_topic_ = std::string("visualization_marker");
 
     rviz_selected_pub_ = nh_.advertise<sensor_msgs::PointCloud2>( rviz_cloud_topic_.c_str(), 1 );
@@ -206,7 +205,7 @@ int SelectedPointsPublisher::_processSelectedAreaAndFindPoints()
     rviz::SelectionManager* sel_manager = context_->getSelectionManager();
     rviz::M_Picked selection = sel_manager->getSelection();
     rviz::PropertyTreeModel *model = sel_manager->getPropertyModel();
-    int num_points = model->rowCount();
+    int num_points = model->columnCount();
     ROS_INFO_STREAM_NAMED( "SelectedPointsPublisher._processSelectedAreaAndFindPoints", "Number of points in the selected area: " << num_points);
 
     // Generate a ros point cloud message with the selected points in rviz
