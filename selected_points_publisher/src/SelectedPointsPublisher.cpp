@@ -25,8 +25,7 @@
 #include <pcl/filters/passthrough.h>
 #include <pcl/common/common.h>
 
-#include <pcl/filters/impl/box_clipper3D.hpp>
-
+/* #include <pcl/filters/impl/box_clipper3D.hpp> */
 
 #include <visualization_msgs/Marker.h>
 
@@ -47,9 +46,12 @@ SelectedPointsPublisher::~SelectedPointsPublisher()
 void SelectedPointsPublisher::updateTopic()
 {
     nh_.param("frame_id", tf_frame_, std::string("/base_link"));
+    std::string cloud_topic;
+    nh_.param("source_cloud_topic", cloud_topic, std::string("/velodyne_points"));
+
     rviz_cloud_topic_ = std::string("/rviz_selected_points");
     real_cloud_topic_ = std::string("/real_selected_points");
-    subs_cloud_topic_ = std::string("/camera/depth_registered/points");
+    subs_cloud_topic_ = cloud_topic;
     bb_marker_topic_ = std::string("visualization_marker");
 
     rviz_selected_pub_ = nh_.advertise<sensor_msgs::PointCloud2>( rviz_cloud_topic_.c_str(), 1 );
@@ -62,8 +64,8 @@ void SelectedPointsPublisher::updateTopic()
     ROS_INFO_STREAM_NAMED("SelectedPointsPublisher.updateTopic", "Publishing real selected points on topic " <<  nh_.resolveName (real_cloud_topic_) );//<< " with frame_id " << context_->getFixedFrame().toStdString() );
     ROS_INFO_STREAM_NAMED("SelectedPointsPublisher.updateTopic", "Publishing bounding box marker on topic " <<  nh_.resolveName (bb_marker_topic_) );//<< " with frame_id " << context_->getFixedFrame().toStdString() );
 
-    current_pc_.reset(new pcl::PointCloud<pcl::PointXYZRGB>());
-    accumulated_segment_pc_.reset(new pcl::PointCloud<pcl::PointXYZRGB>);
+    current_pc_.reset(new pcl::PointCloud<pcl::PointXYZ>());
+    accumulated_segment_pc_.reset(new pcl::PointCloud<pcl::PointXYZ>);
 
     num_acc_points_ = 0;
     num_selected_points_ = 0;
@@ -92,7 +94,7 @@ int SelectedPointsPublisher::processKeyEvent( QKeyEvent* event, rviz::RenderPane
                 sel_manager->removeSelection(selection);
                 visualization_msgs::Marker marker;
                 // Set the frame ID and timestamp.  See the TF tutorials for information on these.
-                marker.header.frame_id = context_->getFixedFrame().toStdString().c_str();
+                marker.header.frame_id = this->current_pc_->header.frame_id;
                 marker.header.stamp = ros::Time::now();
                 marker.ns = "basic_shapes";
                 marker.id = 0;
@@ -100,8 +102,8 @@ int SelectedPointsPublisher::processKeyEvent( QKeyEvent* event, rviz::RenderPane
                 marker.action = visualization_msgs::Marker::DELETE;
                 marker.lifetime = ros::Duration();
 
-                selected_segment_pc_.reset(new pcl::PointCloud<pcl::PointXYZRGB>);
-                accumulated_segment_pc_.reset(new pcl::PointCloud<pcl::PointXYZRGB>);
+                selected_segment_pc_.reset(new pcl::PointCloud<pcl::PointXYZ>);
+                accumulated_segment_pc_.reset(new pcl::PointCloud<pcl::PointXYZ>);
                 bb_marker_pub_.publish(marker);
             }
             else if(event->key() == 'r' || event->key() == 'R')
@@ -122,7 +124,7 @@ int SelectedPointsPublisher::processKeyEvent( QKeyEvent* event, rviz::RenderPane
                 sel_manager->removeSelection(selection);
                 visualization_msgs::Marker marker;
                 // Set the frame ID and timestamp.  See the TF tutorials for information on these.
-                marker.header.frame_id = context_->getFixedFrame().toStdString().c_str();
+                marker.header.frame_id = this->current_pc_->header.frame_id;
                 marker.header.stamp = ros::Time::now();
                 marker.ns = "basic_shapes";
                 marker.id = 0;
@@ -132,7 +134,7 @@ int SelectedPointsPublisher::processKeyEvent( QKeyEvent* event, rviz::RenderPane
                 bb_marker_pub_.publish(marker);
 
                 // First remove the selected point of the original point cloud so that they cannot be selected again:
-                pcl::PointCloud<pcl::PointXYZRGB> temp_new_pc;
+                pcl::PointCloud<pcl::PointXYZ> temp_new_pc;
                 extract_indices_filter_->setKeepOrganized(true);
                 extract_indices_filter_->setNegative(true);
                 temp_new_pc.header = this->current_pc_->header;
@@ -161,7 +163,7 @@ int SelectedPointsPublisher::processKeyEvent( QKeyEvent* event, rviz::RenderPane
                     this->num_acc_points_ += this->num_selected_points_;
                 }
 
-                selected_segment_pc_.reset(new pcl::PointCloud<pcl::PointXYZRGB>);
+                selected_segment_pc_.reset(new pcl::PointCloud<pcl::PointXYZ>);
                 this->num_selected_points_ = 0;
 
                 ROS_INFO_STREAM_NAMED("SelectedPointsPublisher._processSelectedAreaAndFindPoints",
@@ -206,12 +208,12 @@ int SelectedPointsPublisher::_processSelectedAreaAndFindPoints()
     rviz::SelectionManager* sel_manager = context_->getSelectionManager();
     rviz::M_Picked selection = sel_manager->getSelection();
     rviz::PropertyTreeModel *model = sel_manager->getPropertyModel();
-    int num_points = model->rowCount();
+    int num_points = model->columnCount();
     ROS_INFO_STREAM_NAMED( "SelectedPointsPublisher._processSelectedAreaAndFindPoints", "Number of points in the selected area: " << num_points);
 
     // Generate a ros point cloud message with the selected points in rviz
     sensor_msgs::PointCloud2 selected_points_ros;
-    selected_points_ros.header.frame_id = context_->getFixedFrame().toStdString();
+    selected_points_ros.header.frame_id = this->current_pc_->header.frame_id;
     selected_points_ros.height = 1;
     selected_points_ros.width = num_points;
     selected_points_ros.point_step = 3 * 4;
@@ -287,7 +289,7 @@ int SelectedPointsPublisher::_processSelectedAreaAndFindPoints()
     double bb_size_y = max_pt.y - min_pt.y;
     double bb_size_z = max_pt.z - min_pt.z;
 
-    // NOTE: Use these two lines and change the following code (templates on PointXYZ instead of PointXYZRGB)
+    // NOTE: Use these two lines and change the following code (templates on PointXYZ instead of PointXYZ)
     // if your input cloud is not colored
     // Convert the point cloud from the callback into a xyz point cloud
     //pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_xyz(new pcl::PointCloud<pcl::PointXYZ>);
@@ -301,7 +303,7 @@ int SelectedPointsPublisher::_processSelectedAreaAndFindPoints()
     Eigen::Affine3f transform = Eigen::Translation3f(tfinal)*qfinal;
     Eigen::Affine3f transform_inverse = transform.inverse();
 
-    pcl::CropBox<pcl::PointXYZRGB> crop_filter;
+    pcl::CropBox<pcl::PointXYZ> crop_filter;
     crop_filter.setTransform(transform_inverse);
     crop_filter.setMax(cb_max);
     crop_filter.setMin(cb_min);
@@ -311,9 +313,9 @@ int SelectedPointsPublisher::_processSelectedAreaAndFindPoints()
     pcl::PointIndices::Ptr inliers( new pcl::PointIndices() );
     crop_filter.filter(inliers->indices);
 
-    this->selected_segment_pc_.reset(new pcl::PointCloud<pcl::PointXYZRGB>);
+    this->selected_segment_pc_.reset(new pcl::PointCloud<pcl::PointXYZ>);
 
-    extract_indices_filter_.reset(new pcl::ExtractIndices<pcl::PointXYZRGB>());
+    extract_indices_filter_.reset(new pcl::ExtractIndices<pcl::PointXYZ>());
     extract_indices_filter_->setIndices(inliers);
     extract_indices_filter_->setKeepOrganized(true);
     extract_indices_filter_->setInputCloud(this->current_pc_);
@@ -333,7 +335,7 @@ int SelectedPointsPublisher::_processSelectedAreaAndFindPoints()
     // Publish the bounding box as a rectangular marker
     visualization_msgs::Marker marker;
     // Set the frame ID and timestamp.  See the TF tutorials for information on these.
-    marker.header.frame_id = context_->getFixedFrame().toStdString().c_str();
+    marker.header.frame_id = this->current_pc_->header.frame_id;
     marker.header.stamp = ros::Time::now();
     marker.ns = "basic_shapes";
     marker.id = 0;
@@ -370,7 +372,7 @@ int SelectedPointsPublisher::_publishAccumulatedPoints()
 
     ROS_WARN_STREAM_NAMED("SelectedPointsPublisher._processSelectedAreaAndFindPoints",
                           "Cleaning the accumulated point cloud after publishing");
-    accumulated_segment_pc_.reset(new pcl::PointCloud<pcl::PointXYZRGB>);
+    accumulated_segment_pc_.reset(new pcl::PointCloud<pcl::PointXYZ>);
     this->num_acc_points_ = 0;
     return 0;
 }
