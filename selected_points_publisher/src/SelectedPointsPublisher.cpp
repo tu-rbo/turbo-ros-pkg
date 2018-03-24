@@ -46,9 +46,12 @@ SelectedPointsPublisher::~SelectedPointsPublisher()
 void SelectedPointsPublisher::updateTopic()
 {
     nh_.param("frame_id", tf_frame_, std::string("/base_link"));
+    std::string cloud_topic;
+    nh_.param("source_cloud_topic", cloud_topic, std::string("/velodyne_points"));
+
     rviz_cloud_topic_ = std::string("/rviz_selected_points");
     real_cloud_topic_ = std::string("/real_selected_points");
-    subs_cloud_topic_ = std::string("/velodyne_points");
+    subs_cloud_topic_ = cloud_topic;
     bb_marker_topic_ = std::string("visualization_marker");
 
     rviz_selected_pub_ = nh_.advertise<sensor_msgs::PointCloud2>( rviz_cloud_topic_.c_str(), 1 );
@@ -91,7 +94,7 @@ int SelectedPointsPublisher::processKeyEvent( QKeyEvent* event, rviz::RenderPane
                 sel_manager->removeSelection(selection);
                 visualization_msgs::Marker marker;
                 // Set the frame ID and timestamp.  See the TF tutorials for information on these.
-                marker.header.frame_id = context_->getFixedFrame().toStdString().c_str();
+                marker.header.frame_id = this->current_pc_->header.frame_id;
                 marker.header.stamp = ros::Time::now();
                 marker.ns = "basic_shapes";
                 marker.id = 0;
@@ -121,7 +124,7 @@ int SelectedPointsPublisher::processKeyEvent( QKeyEvent* event, rviz::RenderPane
                 sel_manager->removeSelection(selection);
                 visualization_msgs::Marker marker;
                 // Set the frame ID and timestamp.  See the TF tutorials for information on these.
-                marker.header.frame_id = context_->getFixedFrame().toStdString().c_str();
+                marker.header.frame_id = this->current_pc_->header.frame_id;
                 marker.header.stamp = ros::Time::now();
                 marker.ns = "basic_shapes";
                 marker.id = 0;
@@ -210,7 +213,7 @@ int SelectedPointsPublisher::_processSelectedAreaAndFindPoints()
 
     // Generate a ros point cloud message with the selected points in rviz
     sensor_msgs::PointCloud2 selected_points_ros;
-    selected_points_ros.header.frame_id = context_->getFixedFrame().toStdString();
+    selected_points_ros.header.frame_id = this->current_pc_->header.frame_id;
     selected_points_ros.height = 1;
     selected_points_ros.width = num_points;
     selected_points_ros.point_step = 3 * 4;
@@ -332,7 +335,7 @@ int SelectedPointsPublisher::_processSelectedAreaAndFindPoints()
     // Publish the bounding box as a rectangular marker
     visualization_msgs::Marker marker;
     // Set the frame ID and timestamp.  See the TF tutorials for information on these.
-    marker.header.frame_id = context_->getFixedFrame().toStdString().c_str();
+    marker.header.frame_id = this->current_pc_->header.frame_id;
     marker.header.stamp = ros::Time::now();
     marker.ns = "basic_shapes";
     marker.id = 0;
